@@ -23,9 +23,10 @@ class OffsetStream extends stream.Transform {
    *
    * @param {Buffer|*} chunk
    * @param {string} [encoding]
-   * @private
+   * @param {function} cb
+ * @private
    */
-  _transform(chunk, encoding) {
+  _transform(chunk, encoding, cb) {
     var buf = chunk instanceof Buffer ? chunk : new Buffer(chunk, encoding);
     if (this._end && this._step > this._end) {
       return;
@@ -44,6 +45,7 @@ class OffsetStream extends stream.Transform {
       offsetEnd += relEnd;
     }
     this.push(buf.slice(offsetStart, offsetEnd));
+    cb();
   }
 }
 

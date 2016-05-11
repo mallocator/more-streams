@@ -6,50 +6,51 @@ var stream = require('stream');
 /**
  * A stream that will process multiple streams at a time and pass them all into on stream
  */
-class SequenceStream extends stream.Duplex {
-  constructor() {
+class SequenceStream extends stream.Readable {
+  /**
+   * @param {Readable|Readable[]} streams
+   */
+  constructor(streams) {
     super();
     this._streams = [];
     this._buffer = [];
+    this.chain.apply(this, arguments);
   }
 
   _read(size) {
-    console.log('read');
-    if (!this._streams.length && !this._currentStream) {
-      return this.push();
-    }
-    this._switch();
-    if (this._buffer.length) {
-      this.push(this._buffer.shift());
-    } else {
-      this.push(this._currentStream.read());
-    }
-  }
-
-  _switch() {
-    if (!this._currentStream) {
-      this._currentStream = this._streams.shift();
-      this._currentStream.on('end', () => {
-        this._currentStream = null;
+    if (!this._current) {
+      if (!this._streams.length) {
+        return this.push(null);
+      }
+      this._current = this._streams.shift();
+      this._current.on('end', () => {
+        this._current = null;
+        this._read(size);
       });
-      console.log('switched')
-      this._currentStream.pipe(this);
+      this._current.on('readable', () => {
+        let chunk;
+        while (null !== (chunk = this._current.read(size))) {
+          if (!this.push(chunk)) {
+            this._current.pause();
+            break;
+          }
+        }
+      });
     }
-  }
-
-  _write(chunk, encoding) {
-    console.log('write')
-    chunk = chunk instanceof Buffer ? chunk : new Buffer(chunk, encoding);
-    this.buffer.push(chunk);
+    if (this._current.isPaused()) {
+      this._current.resume();
+    }
   }
 
   /**
-   *
-   * @param {Writable|Writable[]} streams
+   * @param {Readable|Readable[]} streams
    */
   chain(streams) {
-    this._streams = this._streams.concat(streams);
-    this._switch();
+    if (streams) {
+      for (let stream of arguments) {
+        this._streams = this._streams.concat(stream);
+      }
+    }
     return this;
   }
 }
