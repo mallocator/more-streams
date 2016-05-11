@@ -12,7 +12,7 @@ describe('SequenceStream', () => {
   it('should process a single stream normally', done => {
     var ss = new SequenceStream();
     var writer = new Writer();
-    var out = new Sink(true);
+    var out = new Sink({buffer: true});
     ss.on('end', () => {
       expect(out.buffer.length).to.equal(1);
       expect(out.message()).to.equal('msg');
@@ -27,10 +27,10 @@ describe('SequenceStream', () => {
     var streamNr = 3;
     var message = '';
     var ss = new SequenceStream();
-    var out = new Sink(true);
+    var out = new Sink({buffer: true});
     for (let i = 1; i <= streamNr; i++) {
       message += 'msg' + i;
-      ss.chain(new Writer('msg' + i));
+      ss.chain(new Writer().write('msg' + i));
     }
     ss.on('end', () => {
       expect(out.buffer.length).to.equal(streamNr);

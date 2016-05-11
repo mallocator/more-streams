@@ -7,12 +7,14 @@ var stream = require('stream');
  */
 class Sink extends stream.Writable {
   /**
-   * @param {boolean|Buffer[]} [buffer]  Enable buffering or pass in an array reference where data will be stored.
+   * @see {@link Writable}
+   * @param {Object} [options]
+   * @property {boolean|Buffer[]} [options.buffer]  Enable buffering or pass in an array reference where data will be stored.
    */
-  constructor(buffer) {
-    super();
-    if (buffer) {
-      this._buffer = buffer instanceof Array ? buffer : [];
+  constructor(options) {
+    super(options);
+    if (options.buffer) {
+      this._buffer = options.buffer instanceof Array ? options.buffer : [];
     }
   }
 

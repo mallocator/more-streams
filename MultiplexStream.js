@@ -7,8 +7,12 @@ var stream = require('stream');
  * A stream that will multiplex data from a single stream to multiple streams.
  */
 class MultiplexStream extends stream.Writable {
-  constructor() {
-    super();
+  /**
+   * @see {@link Writable}
+   * @param {Object} [options]
+   */
+  constructor(options) {
+    super(options);
     this._streams = [];
   }
 

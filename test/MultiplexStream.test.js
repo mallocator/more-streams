@@ -12,7 +12,7 @@ describe('MultiplexStream', () => {
   it('should process a single stream normally', done => {
     var ms = new MultiplexStream();
     var writer = new Writer();
-    var out = new Sink(true);
+    var out = new Sink({ buffer:true });
     writer.on('end', () => {
       expect(out.buffer.length).to.equal(1);
       expect(out.message()).to.equal('msg');
@@ -25,10 +25,10 @@ describe('MultiplexStream', () => {
   it('should process multiple streams in the right order', done => {
     var streamNr = 3;
     var ms = new MultiplexStream();
-    var writer = new Writer('msg');
+    var writer = new Writer().write('msg');
     var outs = [];
     for (let i = 1; i <= streamNr; i++) {
-      outs.push(new Sink(true));
+      outs.push(new Sink({ buffer:true }));
     }
     writer.on('end', () => {
       for (let out of outs) {

@@ -8,8 +8,8 @@ var Writer = require('../Writer');
 
 describe('Writer', () => {
   it('should write a message to another stream', done => {
-    var out = new Sink(true);
-    var inp = new Writer('Hello');
+    var out = new Sink({buffer: true});
+    var inp = new Writer().write('Hello');
     inp.on('end', () => {
       expect(out.buffer.length).to.equal(1);
       expect(out.message()).to.equal('Hello');
@@ -19,8 +19,8 @@ describe('Writer', () => {
   });
 
   it('should throw an error if the stream has already been closed.', done => {
-    var out = new Sink(true);
-    var inp = new Writer('Hello');
+    var out = new Sink({buffer: true});
+    var inp = new Writer().write('Hello');
     inp.on('end', () => {
       expect(out.buffer.length).to.equal(1);
       expect(out.message()).to.equal('Hello');

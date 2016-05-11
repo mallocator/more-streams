@@ -8,13 +8,13 @@ var stream = require('stream');
  */
 class SequenceStream extends stream.Readable {
   /**
-   * @param {Readable|Readable[]} streams
+   * @see {@link Readable}
+   * @param {object} [options]
    */
-  constructor(streams) {
-    super();
+  constructor(options) {
+    super(options);
     this._streams = [];
     this._buffer = [];
-    this.chain.apply(this, arguments);
   }
 
   _read(size) {
