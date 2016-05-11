@@ -9,6 +9,7 @@ var stream = require('stream');
  */
 class OffsetStream extends stream.Transform {
   /**
+   * @see {@link Transform}
    * @param {object} [options]
    * @property {number} [options.start]   Position in bytes to skip from the start before passing them on
    * @property {number} [options.end]     Position in bytes to omit form the end and signaling an end at this point

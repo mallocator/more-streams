@@ -13,7 +13,7 @@ class Sink extends stream.Writable {
    */
   constructor(options) {
     super(options);
-    if (options.buffer) {
+    if (options) {
       this._buffer = options.buffer instanceof Array ? options.buffer : [];
     }
   }
@@ -37,7 +37,7 @@ class Sink extends stream.Writable {
    * @returns {string}
    */
   message(encoding = 'utf8') {
-    return Buffer.concat(this._buffer).toString(encoding)
+    return this._buffer ? Buffer.concat(this._buffer).toString(encoding) : '';
   }
 
   /**

@@ -1,7 +1,5 @@
 'use strict';
 
-var stream = require('stream');
-
 var expect = require('chai').expect;
 
 var SequenceStream = require('../SequenceStream');

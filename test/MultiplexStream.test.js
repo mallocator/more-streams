@@ -1,12 +1,11 @@
 'use strict';
 
-var stream = require('stream');
-
 var expect = require('chai').expect;
 
 var MultiplexStream = require('../MultiplexStream');
 var Sink = require('../Sink');
 var Writer = require('../Writer');
+
 
 describe('MultiplexStream', () => {
   it('should process a single stream normally', done => {
