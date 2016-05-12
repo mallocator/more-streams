@@ -42,13 +42,19 @@ For more details take a look at the jsdoc and the tests.
 
 ### ConsoleStream
 
-This is a simple alias for _process.stdout_ for now.
+This is a stream that outputs data to console (or any other output). It supports coloring output 
+based on regular expression matches.
 ```javascript
 var ConsoleStream = require('more-streams/ConsoleStream');
-var out = new ConsoleStream();
+var out = new ConsoleStream({
+  colors: [{
+    match: /error/g,
+    styles: ['red', 'bold']
+  }]
+});
 otherStream.pipe(out);
 
-// -> prints to console
+// -> prints to console with errors in bold and red
 ```
 
 
