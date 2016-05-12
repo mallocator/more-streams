@@ -34,7 +34,7 @@ class SequenceStream extends stream.Transform {
         this._enabled = false;
         return this.end();
       }
-      this._current = this._streams.shift();
+      this._current = new stream.Readable().wrap(this._streams.shift());
       this._current.on('end', () => {
         this._current = null;
         this._next();
@@ -58,8 +58,17 @@ class SequenceStream extends stream.Transform {
         this._streams = this._streams.concat(stream);
       }
     }
-    this._next();
     return this;
+  }
+
+  /**
+   * Overrides the pipe function so that we don't wire up any chains before there's a pipe to send data to.
+   * @returns {Stream}
+   */
+  pipe() {
+    var stream = super.pipe.apply(this, arguments);
+    this._next();
+    return stream;
   }
 }
 
