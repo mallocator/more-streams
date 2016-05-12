@@ -30,7 +30,7 @@ describe('SequenceStream', () => {
       message += 'msg' + i;
       ss.chain(new Writer().write('msg' + i));
     }
-    ss.on('end', () => {
+    out.on('finish', () => {
       expect(out.buffer.length).to.equal(streamNr);
       expect(out.message()).to.equal(message);
       done();

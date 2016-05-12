@@ -20,7 +20,7 @@ class Sink extends stream.Writable {
 
   _write(chunk, encoding, cb) {
     this._buffer && this._buffer.push(chunk instanceof Buffer ? chunk : new Buffer(chunk, encoding));
-    cb();
+    setImmediate(cb);
   }
 
   /**

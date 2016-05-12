@@ -16,9 +16,7 @@ class CountStream extends stream.Transform {
     var buf = chunk instanceof Buffer ? chunk : new Buffer(chunk, encoding);
     this._bytes += buf.length;
     if (this.push(buf)) {
-      cb();
-    } else {
-      cb('Target stream not ready');
+      setImmediate(cb);
     }
   }
 

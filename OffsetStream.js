@@ -102,10 +102,10 @@ class OffsetStream extends stream.Transform {
     var right = left + length;
     this._step += length;
     if (this._start >= right) {
-      return cb();
+      return setImmediate(cb);
     }
     if (this._end <= left) {
-      return cb();
+      return setImmediate(cb);
     }
     var posStart = 0, posEnd = length;
     if(left < this._start && this._start < right) {
@@ -115,7 +115,7 @@ class OffsetStream extends stream.Transform {
       posEnd = this._end - left;
     }
     this.push(buf.slice(posStart, posEnd));
-    cb();
+    setImmediate(cb);
   }
 }
 

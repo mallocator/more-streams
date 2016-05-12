@@ -20,12 +20,14 @@ class MultiplexStream extends stream.Writable {
    *
    * @param {Buffer|*} chunk
    * @param {string} [encoding]
-   * @private
+   * @param {function} cb
+ * @private
    */
-  _write(chunk, encoding) {
+  _write(chunk, encoding, cb) {
     for (let stream of this._streams) {
       stream.write(chunk, encoding);
     }
+    setImmediate(cb);
   }
 
   /**
