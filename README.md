@@ -24,11 +24,11 @@ This library has been written to work with Node.js _v6.x_ and the latest ES2015 
 
 There are 2 ways to include streams:
 
-```
+```javascript
 var CountStream = require('more-streams').CountStream;
 ```
 or
-```
+```javascript
 var CountStream = require('more-streams/CountStream');
 ```
 
@@ -43,7 +43,7 @@ For more details take a look at the jsdoc and the tests.
 ### ConsoleStream
 
 This is a simple alias for _process.stdout_ for now.
-```
+```javascript
 var ConsoleStream = require('more-streams/ConsoleStream');
 var out = new ConsoleStream();
 otherStream.pipe(out);
@@ -55,7 +55,7 @@ otherStream.pipe(out);
 ### CountStream
 
 This is a stream that will count the number of bytes that have passed through. 
-```
+```javascript
 var CountStream = require('more-streams/CountStream');
 var counter = new CountStream();
 counter.on('end', () => console.log(counter.count)); // -> prints total stream bytes count
@@ -63,7 +63,7 @@ otherStream.pipe(counter).pipe(process.stdout);
 ```
 
 The stream also allows you to set markers which will trigger an event that you can react to.
-```
+```javascript
 var CountStream = require('more-streams/CountStream');
 var counter = new CountStream();
 counter.addMarker(10);
@@ -75,7 +75,7 @@ otherStream.pipe(counter).pipe(process.stdout);
 ### MultiplexStream
 
 A stream that will copy data and pipe it to multiple streams.
-```
+```javascript
 var MultiplexStream = require('more-streams/MultiplexStream');
 var mux = new MultiplexStream();
 otherStream.pipe(mux).pipe([process.stdout, process.stdout]);
@@ -87,7 +87,7 @@ otherStream.pipe(mux).pipe([process.stdout, process.stdout]);
 ### OffsetStream
 
 A stream that allows to omit data from the beginning and end of another stream.
-```
+```javascript
 var OffsetStream = require('more-streams/OffsetStream');
 var offset = new OffsetStream({start: 10, end: 20});
 otherStream.pipe(offset).pipe(process.stdout);
@@ -99,7 +99,7 @@ otherStream.pipe(offset).pipe(process.stdout);
 ### SequenceStream
 
 A stream that allows to sequentially read data from multiple streams into one.
-```
+```javascript
 var SequenceStream = require('more-streams/SequenceStream');
 var demux = new SequenceStream();
 demux.chain(otherStream1, otherStream2, otherStream3);
@@ -113,7 +113,7 @@ demux.pipe(process.stdout);
 
 A stream that will consume all data given. Optionally this stream can buffer all incoming data
 for later use.
-```
+```javascript
 var Sink = require('more-streams/Sink');
 var buffer = new Sink({ buffer: true });
 buffer.on('end', () => console.log(buffer.message('hex')));  // -> prints to console
@@ -124,7 +124,7 @@ otherStream.pipe(buffer);
 ### Writer
 
 A stream that can be preloaded with data ready to be read when a stream triggers a read.
-```
+```javascript
 var Writer = require('more-streams/Writer');
 var output = new Writer();
 output.write('message');
