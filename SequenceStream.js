@@ -26,14 +26,14 @@ class SequenceStream extends stream.Transform {
     if (!this._current) {
       if (!this._streams.length) {
         this._enabled = false;
-        return this.emit('end');
+        return this.end();
       }
       this._current = this._streams.shift();
       this._current.on('end', () => {
         this._current = null;
         this._next();
       });
-      this._current.pipe(this, {end: false});
+      this._current.pipe(this, { end: false });
     }
   }
 
