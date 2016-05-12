@@ -15,6 +15,7 @@ class SequenceStream extends stream.Transform {
     super(options);
     this._streams = [];
     this._buffer = [];
+    this._enabled = true;
   }
 
   _transform(chunk, encoding, cb) {
@@ -24,7 +25,8 @@ class SequenceStream extends stream.Transform {
   _next() {
     if (!this._current) {
       if (!this._streams.length) {
-        return this.push(null);
+        this._enabled = false;
+        return this.emit('end');
       }
       this._current = this._streams.shift();
       this._current.on('end', () => {
@@ -39,6 +41,9 @@ class SequenceStream extends stream.Transform {
    * @param {Readable|Readable[]} streams
    */
   chain(streams) {
+    if (!this._enabled) {
+      return this.emit('error', 'Stream is closed, unable to add more sources');
+    }
     if (streams) {
       for (let stream of arguments) {
         this._streams = this._streams.concat(stream);
