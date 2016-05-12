@@ -57,6 +57,8 @@ otherStream.pipe(out);
 // -> prints to console with errors in bold and red
 ```
 
+For more styles that you can apply take a look at [chalk](https://github.com/chalk/chalk#styles)
+
 
 ### CountStream
 
