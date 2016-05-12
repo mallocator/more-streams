@@ -19,9 +19,15 @@ class SequenceStream extends stream.Transform {
   }
 
   _transform(chunk, encoding, cb) {
-    cb(null, chunk);
+    var buf = chunk instanceof Buffer ? chunk : new Buffer(chunk, encoding);
+    cb(null, buf);
   }
 
+  /**
+   * Changes the current read stream to the next one if the last one is done and has been cleared, or no source has yet
+   * been chosen.
+   * @private
+   */
   _next() {
     if (!this._current) {
       if (!this._streams.length) {
