@@ -25,7 +25,7 @@ class CountStream extends stream.Transform {
 
   /**
    * Add one or more markers that you would like to have an event be fired on.
-   * @param {number|number[]} marker
+   * @param {...number|number[]} marker
    * @return {CountStream}
    */
   addMarker(marker) {
@@ -40,22 +40,24 @@ class CountStream extends stream.Transform {
 
   /**
    * Remove one or more markers that have been set previously.
-   * @param {number|number[]} marker
+   * @param {...number|number[]} marker
    * @return {CountStream}
    */
   removeMarker(marker) {
-    this._markers = this._markers.filter(val => {
-      for (let entry of arguments) {
-        if (entry instanceof Array) {
-          if (entry.indexOf(val) !== -1) {
+    if (marker) {
+      this._markers = this._markers.filter(val => {
+        for (let entry of arguments) {
+          if (entry instanceof Array) {
+            if (entry.indexOf(val) !== -1) {
+              return false;
+            }
+          } else if (entry == val) {
             return false;
           }
-        } else if(entry == val) {
-          return false;
         }
-      }
-      return true;
-    });
+        return true;
+      });
+    }
     return this;
   }
 
