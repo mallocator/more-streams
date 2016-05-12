@@ -1,6 +1,6 @@
 {
   "name": "more-streams",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "A collection of useful stream implementations",
   "license": "Apache-2.0",
   "homepage": "http://github.com/mallocator/more-streams",

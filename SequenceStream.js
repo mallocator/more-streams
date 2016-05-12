@@ -6,7 +6,7 @@ var stream = require('stream');
 /**
  * A stream that will process multiple streams at a time and pass them all into on stream
  */
-class SequenceStream extends stream.Readable {
+class SequenceStream extends stream.Transform {
   /**
    * @see {@link Readable}
    * @param {object} [options]
@@ -17,7 +17,11 @@ class SequenceStream extends stream.Readable {
     this._buffer = [];
   }
 
-  _read(size) {
+  _transform(chunk, encoding, cb) {
+    cb(null, chunk);
+  }
+
+  _next() {
     if (!this._current) {
       if (!this._streams.length) {
         return this.push(null);
@@ -25,20 +29,9 @@ class SequenceStream extends stream.Readable {
       this._current = this._streams.shift();
       this._current.on('end', () => {
         this._current = null;
-        this._read(size);
+        this._next();
       });
-      this._current.on('readable', () => {
-        let chunk;
-        while (null !== (chunk = this._current.read(size))) {
-          if (!this.push(chunk)) {
-            this._current.pause();
-            break;
-          }
-        }
-      });
-    }
-    if (this._current.isPaused()) {
-      this._current.resume();
+      this._current.pipe(this, {end: false});
     }
   }
 
@@ -51,6 +44,7 @@ class SequenceStream extends stream.Readable {
         this._streams = this._streams.concat(stream);
       }
     }
+    this._next();
     return this;
   }
 }
