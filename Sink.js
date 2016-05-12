@@ -3,7 +3,7 @@
 var stream = require('stream');
 
 /**
- *
+ * A stream that consumes all data written to it. Supports buffering data for later consumption.
  */
 class Sink extends stream.Writable {
   /**

@@ -17,15 +17,20 @@ class MultiplexStream extends stream.Writable {
   }
 
   /**
-   *
    * @param {Buffer|*} chunk
    * @param {string} [encoding]
    * @param {function} cb
- * @private
+   * @private
    */
   _write(chunk, encoding, cb) {
     for (let stream of this._streams) {
-      stream.write(chunk, encoding);
+      if (chunk instanceof Buffer) {
+        let copy = Buffer.alloc(chunk.length)
+        chunk.copy(copy);
+        stream.write(copy, encoding);
+      } else {
+        stream.write(chunk.slice(0), encoding);
+      }
     }
     setImmediate(cb);
   }

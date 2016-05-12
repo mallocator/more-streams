@@ -3,6 +3,9 @@
 var stream = require('stream');
 
 
+/**
+ * A simple Writer stream for when you can't write to a stream directly and need to rely on the read event of a sink.
+ */
 class Writer extends stream.Readable {
   /**
    * @see {@link Readable}

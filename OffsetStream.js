@@ -34,9 +34,9 @@ class OffsetStream extends stream.Transform {
   /**
    * Set a start position from where to pass on data. This setting will override the length property
    * based on where the end is set.
-   * @param position
+   * @param {number} position The starting position from where to start reading data.
    * @returns {OffsetStream}
-     */
+   */
   setStart(position) {
     if (this._closed) {
       throw new Error('Stream has already been closed');
@@ -54,9 +54,9 @@ class OffsetStream extends stream.Transform {
   /**
    * Set a length for how many bytes to pass on before ending. This setting will override the end property
    * based on where start is set.
-   * @param length
+   * @param {number} length   The number of bytes that will be passed on before closing.
    * @returns {OffsetStream}
-     */
+   */
   setLength(length) {
     if (this._closed) {
       throw new Error('Stream has already been closed');
@@ -71,9 +71,9 @@ class OffsetStream extends stream.Transform {
   /**
    * Set an end position up to where data is processed. This setting will override the length property
    * based on where the start is set.
-   * @param position
+   * @param {number} position   The position of where to stop reading data.
    * @returns {OffsetStream}
-     */
+   */
   setEnd(position) {
     if (this._closed) {
       throw new Error('Stream has already been closed');

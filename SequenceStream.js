@@ -4,7 +4,7 @@ var stream = require('stream');
 
 
 /**
- * A stream that will process multiple streams at a time and pass them all into on stream
+ * A stream that will process multiple streams at a time and pass them all into on stream.
  */
 class SequenceStream extends stream.Transform {
   /**
@@ -44,6 +44,9 @@ class SequenceStream extends stream.Transform {
   }
 
   /**
+   * Add stream(s) that will be used as a source and read in the given order. Multiple calls to this method will queue
+   * up additional streams at the end. Once all streams have been processed this instance will not allow to add any more
+   * chained streams. Instead you have to create a new object.
    * @param {Readable|Readable[]} streams
    */
   chain(streams) {
