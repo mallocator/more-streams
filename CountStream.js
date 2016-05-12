@@ -6,6 +6,7 @@ var stream = require('stream');
 /**
  * A stream that counts the number of bytes passed through. The stream allows to set markers at which a "marker" event
  * is fired.
+ * @emits marker
  */
 class CountStream extends stream.Transform {
   /**
@@ -73,7 +74,7 @@ class CountStream extends stream.Transform {
     var buf = chunk instanceof Buffer ? chunk : new Buffer(chunk, encoding);
     this._bytes += buf.length;
     while (this._markers.length && this._markers[0] <= this._bytes) {
-      this.emit('marker', this._markers.shift());
+      this.emit('marker', this._markers.shift(), this);
     }
     if (this.push(buf)) {
       setImmediate(cb);
