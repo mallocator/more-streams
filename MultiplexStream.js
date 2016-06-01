@@ -25,7 +25,7 @@ class MultiplexStream extends stream.Writable {
   _write(chunk, encoding, cb) {
     for (let stream of this._streams) {
       if (chunk instanceof Buffer) {
-        let copy = Buffer.alloc(chunk.length)
+        let copy = Buffer.alloc(chunk.length);
         chunk.copy(copy);
         stream.write(copy, encoding);
       } else {

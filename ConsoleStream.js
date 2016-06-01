@@ -44,7 +44,7 @@ class ConsoleStream extends stream.Transform {
   _transform(chunk, encoding, cb) {
     var string = chunk.toString();
     for (let color of this._colors) {
-        string = string.replace(color.match, this._colorize(color.styles, '$&'))
+        string = string.replace(color.match, this._colorize(color.styles, '$&'));
     }
     cb(null, string, 'utf8');
   }

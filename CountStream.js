@@ -19,7 +19,7 @@ class CountStream extends stream.Transform {
     super(options);
     this.clear();
     if (options) {
-      this.addMarker(options.markers)
+      this.addMarker(options.markers);
     }
     this._bytes = 0;
   }
